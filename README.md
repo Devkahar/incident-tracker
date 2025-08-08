@@ -6,16 +6,16 @@ go run main.go
 ### Setup Database
 - Create the  database in mysql
 ```
-create database incident-trackerdb;
+create database incident_trackerdb;
 ```
 
 - Create a user in mysql
 ```
-create user 'incident-tracker'@'localhost' identified by 'incident-tracker';
+create user 'incident_tracker'@'localhost' identified by 'incident_tracker';
 ```
 - Grant all privileges to the user
 ```
-grant all privileges on incident-trackerdb.* to 'incident-tracker'@'localhost';
+grant all privileges on incident_trackerdb.* to 'incident_tracker'@'localhost';
 ```
 - Flush privileges
 ```

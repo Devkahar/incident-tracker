@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: incident_tackerdb
+    networks:
+      - incident-tracker
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      retries: 10
+      start_period: 5s
+      timeout: 3s
+
+  incident-tracker:
+    image: incident-tracker.go
+    container_name: incident-tracker
+    env_file:
+      - ./.env
+    environment:
+      DB_HOST: mysql
+    networks:
+      - incident-tracker
+    ports:
+      - "8088:8088"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/health"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 3s
+
+networks:
+  incident-tracker:
+
+volumes:
+  mysql-data:

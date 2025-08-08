@@ -16,6 +16,9 @@ type Server struct {
 }
 
 func (server *Server) AddRoutes() *Server {
+	server.router.GET("/health", func(ctx *gin.Context) {
+		ctx.JSON(200, "incident-tracker is alive")
+	})
 	v1 := server.router.Group("/v1")
 	{
 		incidents := v1.Group("/incidents")
